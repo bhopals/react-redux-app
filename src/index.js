@@ -4,12 +4,20 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import thunk from 'redux-thunk';
+
+
 import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import {createStore, applyMiddleware, combineReducers, compose} from 'redux'
 import allReducers from './reducers/index.reducers'
 import {updateUser} from './actions/user.action'
 import {updateProduct} from './actions/product.action'
 
+
+const allStoreEnhancements = compose(
+    applyMiddleware(thunk),
+    window.devToolsExtension && window.devToolsExtension()
+);
 
 const store = createStore(
     allReducers, 
@@ -17,7 +25,7 @@ const store = createStore(
         products:[{name:"First Product"}],
         user:"BHOPAL"
     }, 
-    window.devToolsExtension && window.devToolsExtension()
+    allStoreEnhancements
 );
 
 

@@ -2,9 +2,10 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {updateUser} from './actions/user.action'
+import {updateUser, apiRequest} from './actions/user.action'
 
 class App extends React.Component {
 
@@ -12,6 +13,14 @@ class App extends React.Component {
     super(props);
 
     this.onUpdateUser = this.onUpdateUser.bind(this);
+  }
+
+  componentWillMount() {
+    console.log("Componenet will mount");
+    this.props.onApiRequest();
+    setTimeout(()=>{this.props.onApiRequest()}, 5000);
+    //setTimeout(this.props.onApiRequest(), 1000)
+
   }
 
   onUpdateUser(event) {
@@ -57,6 +66,12 @@ const mapStateToProps = (state, props) => {
 }
 
 
+const mapDispatchToProps = {
+    onUpdateUser : updateUser,
+    onApiRequest : apiRequest
+} 
+
+/*
 const mapDispatchToProps =(dispatch, props) => {
   return bindActionCreators({onUpdateUser : updateUser
   }, dispatch)
@@ -69,6 +84,6 @@ const mergeProps = (mapStateToProps, mapDispatchToProps, ownProps) => {
     ownProps
   }
 }
-
+*/
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
