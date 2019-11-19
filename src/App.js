@@ -2,7 +2,24 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {updateUser} from './actions/user.action'
+
+class App extends React.Component {
+
+  constructor(props){
+    super(props);
+
+    this.onUpdateUser = this.onUpdateUser.bind(this);
+  }
+
+  onUpdateUser(event) {
+    this.props.onUpdateUser(event.target.value);
+  }
+
+render() {
+  console.log("IN HERE !!!",this.props.user)
   return (
     <div className="App">
       <header className="App-header">
@@ -18,9 +35,40 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> 
+      
+      <div><input onChange={this.onUpdateUser} type="text" value={this.props.user}/></div>
+      <div>
+      Your current name is {this.props.user} and Country is {this.props.country} 
+      </div>
     </div>
   );
 }
+  
+}
 
-export default App;
+const mapStateToProps = (state, props) => {
+
+  return {
+    products:state.products,
+    user:state.user,
+    country: "II-"+props.country
+  }
+}
+
+
+const mapDispatchToProps =(dispatch, props) => {
+  return bindActionCreators({onUpdateUser : updateUser
+  }, dispatch)
+} 
+  
+const mergeProps = (mapStateToProps, mapDispatchToProps, ownProps) => {
+  return {
+    mapStateToProps,
+    mapDispatchToProps,
+    ownProps
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
